@@ -1,0 +1,84 @@
+import 'package:flutter/material.dart';
+import 'items_dashboard.dart';
+
+// ignore: must_be_immutable
+class DashboardScreen extends StatelessWidget {
+  DashboardScreen({Key? key}) : super(key: key);
+
+  // Lista dos itens a serem mostrados na dashboard
+  ItemsDashboard item1 = ItemsDashboard(
+      "Unidades", "Casa dos Moradores", "assets/images/home.png");
+
+  ItemsDashboard item2 = ItemsDashboard(
+      "Usuários", "Registro de Usuários", "assets/images/persons.png");
+
+  ItemsDashboard item3 = ItemsDashboard(
+      "Encomendas", "Entrega das Encomendas", "assets/images/map.png");
+
+  ItemsDashboard item4 = ItemsDashboard(
+      "Configurações", "Configurar App", "assets/images/setting.png");
+
+  @override
+  Widget build(BuildContext context) {
+    List<ItemsDashboard> myList = [
+      item1,
+      item2,
+      item3,
+      item4
+    ]; // declaração da lista
+
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: GridView.builder(
+          itemCount: myList.length,
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 1,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10),
+          itemBuilder: (BuildContext ctx, index) {
+            return GestureDetector(
+              onTap: () => callOwner(ctx, index),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(158, 110, 144, 218),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Column(children: [
+                  Image.asset(myList[index].image),
+                  Text(myList[index].tittle),
+                ]),
+              ),
+            );
+          }),
+    );
+  }
+
+  callOwner(BuildContext context, int index) {
+    // função de detecção de toque para mudança de tela
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushNamed("/unit");
+        return DashboardScreen();
+      case 1:
+        Navigator.of(context).pushNamed("/users");
+        return DashboardScreen();
+      case 2:
+        Navigator.of(context).pushNamed("/orders");
+        return DashboardScreen();
+      case 3:
+        Navigator.of(context).pushNamed("/settings");
+        return DashboardScreen();
+      default:
+    }
+    // pula para outra tela sem remover a atual
+  }
+}
+
+
+
+body: ListView.separated(
+          itemBuilder: (context, index) =>
+              const Text('produto'),
+          separatorBuilder: (context, index) => const SizedBox(height: 40),
+          itemCount: 5),
