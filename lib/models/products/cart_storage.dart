@@ -12,7 +12,7 @@ class CartStorage {
   finalAmount() {
     double result = 0;
     for (int i = 0; i < products.length; i++) {
-      result = products[i].price;
+      result = products[i].preco * products[i].quantidade;
     }
     amount = result;
   }
