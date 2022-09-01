@@ -6,7 +6,7 @@ import 'package:musicstore_app/models/products/products_store.dart';
 import 'package:musicstore_app/screens/utils/cart_screen.dart';
 
 class SalesScreen extends StatefulWidget {
-  SalesScreen({Key? key}) : super(key: key);
+  const SalesScreen({Key? key}) : super(key: key);
 
   @override
   State<SalesScreen> createState() => _SalesScreenState();
@@ -26,119 +26,138 @@ class _SalesScreenState extends State<SalesScreen> {
     cart = CartStorage(products: _products);
     // _controller.text = "0";
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _productsServices.getProducts(),
-              builder: ((BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  List<DocumentSnapshot> docSnap = snapshot.data!.docs;
-                  return ListView.separated(
-                      itemBuilder: (context, index) {
-                        final TextEditingController _controller =
-                            TextEditingController();
-                        _controller.text = "0";
-                        return Center(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
+        body: Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                'assets/images/pexels-jessica-lewis-creative.jpg',
+              ),
+              fit: BoxFit.cover)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _productsServices.getProducts(),
+                    builder: ((BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        List<DocumentSnapshot> docSnap = snapshot.data!.docs;
+                        return ListView.separated(
+                            itemBuilder: (context, index) {
+                              final TextEditingController _controller =
+                                  TextEditingController();
+                              _controller.text = "0";
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    Row(
                                       children: [
-                                        Text(docSnap[index].get('marca')),
-                                        Text(docSnap[index].get('tipo')),
-                                        Text(docSnap[index]
-                                            .get('preco')
-                                            .toString()),
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Text(docSnap[index].get('marca')),
+                                              Text(docSnap[index].get('tipo')),
+                                              Text(docSnap[index]
+                                                  .get('preco')
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  int valor = int.parse(
+                                                          _controller.text),
+                                                      maximo = docSnap[index]
+                                                          .get("quantidade");
+                                                  if (valor < maximo) {
+                                                    valor++;
+                                                  }
+                                                  _controller.text =
+                                                      valor.toString();
+                                                },
+                                                child: const Text(' + ')),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  int valor = int.parse(
+                                                      _controller.text);
+                                                  if (valor > 1) {
+                                                    valor--;
+                                                  }
+                                                  _controller.text =
+                                                      valor.toString();
+                                                },
+                                                child: const Text(' - ')),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  Column(
-                                    children: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            int valor =
-                                                    int.parse(_controller.text),
-                                                maximo = docSnap[index]
-                                                    .get("quantidade");
-                                            if (valor < maximo) {
-                                              valor++;
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          int i = checkCart(docSnap[index].id);
+                                          if (i == -1) {
+                                            cart.products.add(Products(
+                                              id: docSnap[index].id,
+                                              marca:
+                                                  docSnap[index].get("marca"),
+                                              tipo: docSnap[index].get("tipo"),
+                                              quantidade: docSnap[index]
+                                                  .get("quantidade"),
+                                            ));
+                                          } else {
+                                            if (cart.products[i].quantidade <
+                                                docSnap[index]
+                                                    .get("quantidade")) {
+                                              cart.products[i].quantidade += 1;
+                                              if (cart.products[i].quantidade! >
+                                                  docSnap[index]
+                                                      .get("quantidade")) {
+                                                cart.products[i].quantidade =
+                                                    docSnap[index]
+                                                        .get("quantidade");
+                                              }
                                             }
-                                            _controller.text = valor.toString();
-                                          },
-                                          child: const Text(' + ')),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            int valor =
-                                                int.parse(_controller.text);
-                                            if (valor > 1) {
-                                              valor--;
-                                            }
-                                            _controller.text = valor.toString();
-                                          },
-                                          child: const Text(' - ')),
-                                    ],
-                                  ),
+                                          }
+                                        },
+                                        child: const Text(
+                                            "Adicionar ao carrinho")),
+                                    TextFormField(
+                                      controller: _controller,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Column(
+                                children: const [
+                                  SizedBox(height: 10),
+                                  Divider(),
                                 ],
-                              ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    int i = checkCart(docSnap[index].id);
-                                    if (i == -1) {
-                                      cart.products.add(Products(
-                                        id: docSnap[index].id,
-                                        marca: docSnap[index].get("marca"),
-                                        tipo: docSnap[index].get("tipo"),
-                                        quantidade:
-                                            docSnap[index].get("quantidade"),
-                                      ));
-                                    } else {
-                                      if (cart.products[i].quantidade <
-                                          docSnap[index].get("quantidade")) {
-                                        cart.products[i].quantidade += 1;
-                                        if (cart.products[i].quantidade! >
-                                            docSnap[index].get("quantidade")) {
-                                          cart.products[i].quantidade =
-                                              docSnap[index].get("quantidade");
-                                        }
-                                      }
-                                    }
-                                  },
-                                  child: const Text("Adicionar ao carrinho")),
-                              TextFormField(
-                                controller: _controller,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return Column(
-                          children: const [
-                            SizedBox(height: 10),
-                            Divider(),
-                          ],
-                        );
-                      },
-                      itemCount: docSnap.length);
-                } else if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                } else {
-                  return const Text("Nenhum produto registrado.");
-                }
-              }),
+                              );
+                            },
+                            itemCount: docSnap.length);
+                      } else if (!snapshot.hasData) {
+                        return const CircularProgressIndicator();
+                      } else {
+                        return const Text("Nenhum produto registrado.");
+                      }
+                    }),
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: onPressed, child: const Text("Finalizar compra"))
+              ],
             ),
-          ),
-          ElevatedButton(
-              onPressed: onPressed, child: const Text("Finalizar compra"))
-        ],
+          ],
+        ),
       ),
     ));
   }

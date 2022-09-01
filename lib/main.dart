@@ -1,16 +1,16 @@
+// import 'package:musicstore_app/screens/utils/cart_screen.dart';
+// import 'package:musicstore_app/models/products/cart_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:musicstore_app/models/products/cart_storage.dart';
 import 'package:musicstore_app/screens/home/homepage.dart';
 import 'package:musicstore_app/screens/login/login_screen.dart';
 import 'package:musicstore_app/screens/login/signup_screen.dart';
-import 'package:musicstore_app/screens/utils/cart_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
 class MyApp extends StatelessWidget {

@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:musicstore_app/user/user_local.dart';
 
-class HomepageScreenScreen extends StatefulWidget {
-  const HomepageScreenScreen({Key? key}) : super(key: key);
+class HomepageScreen extends StatefulWidget {
+  const HomepageScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomepageScreenScreen> createState() => _HomepageScreenPageState();
+  State<HomepageScreen> createState() => _HomepageScreenPageState();
 }
 
-class _HomepageScreenPageState extends State<HomepageScreenScreen> {
+class _HomepageScreenPageState extends State<HomepageScreen> {
   final UserLocal userLocal = UserLocal();
-
+ 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: SingleChildScrollView(
-            child: Column(
-      children: [
-        Row(
-          children: const [
-            SizedBox(
-              height: 200,
-              child: Text(
-                'Bem vindo !',
+    return Scaffold(
+        body: Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                'assets/images/pexels-jessica-lewis-creative.jpg',
               ),
-            )
-          ],
-        )
-      ],
-    )));
+              fit: BoxFit.cover)),
+    ));
   }
 }

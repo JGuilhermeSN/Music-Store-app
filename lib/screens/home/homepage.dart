@@ -17,8 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> pageList = []; // declaração da lista
   @override
   void initState() {
-    pageList.add(const HomepageScreenScreen());
-    pageList.add(SalesScreen());
+    pageList.add(const HomepageScreen());
+    pageList.add(const SalesScreen());
     pageList.add(const MenuScreen());
     // pageList.add(const DashboardScreen());
     super.initState();
@@ -30,14 +30,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       // parte superior - Appbar
       appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 161, 94, 18),
-          elevation: 10,
-          title: const Center(
-            child: Text(
-              "JG Music",
-              style: TextStyle(fontSize: 15),
+        backgroundColor: const Color.fromARGB(255, 161, 94, 18),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/static-edited.png",
+              fit: BoxFit.fitHeight,
+              height: 55,
             ),
-          )),
+          ],
+        ),
+      ),
       body: IndexedStack(
         children: pageList,
         index: _selectedPage,
@@ -48,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedPage,
         type: BottomNavigationBarType.fixed,
         // backgroundColor: Colors.green.shade900,
-        unselectedItemColor: const Color.fromARGB(255, 161, 94, 18),
-        selectedItemColor: const Color.fromARGB(255, 73, 42, 6),
+        selectedItemColor: const Color.fromARGB(255, 233, 143, 21),
+        unselectedItemColor: const Color.fromARGB(255, 73, 42, 6),
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),

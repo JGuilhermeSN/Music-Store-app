@@ -1,5 +1,5 @@
-// import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:musicstore_app/helpers/block_button.dart';
 import 'package:musicstore_app/screens/home/homepage.dart';
 import 'package:musicstore_app/user/user_local.dart';
 import 'package:musicstore_app/user/user_services.dart';
@@ -17,14 +17,19 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        child: Center(
-          heightFactor: 1.75,
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/annie-spratt-violao_base.jpg',
+                ),
+                fit: BoxFit.cover)),
+        child: Form(
           child: Container(
-            height: 350,
-            width: 350,
-            padding: const EdgeInsets.all(10),
-            alignment: Alignment.topCenter,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -32,11 +37,21 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _formkey,
               child: Column(
                 children: [
+                  Container(
+                    height: 50,
+                    width: 200,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                              'assets/images/static-no-backgound.png',
+                            ),
+                            fit: BoxFit.cover)),
+                  ),
                   const Text(
                     "Bem vindo!",
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 30,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -47,9 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onSaved: (value) => userLocal.email = value,
                     initialValue: userLocal.email,
                     decoration: const InputDecoration(
+                        filled: true,
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.only(
-                            left: 20, right: 20, top: 30, bottom: 10),
+                        contentPadding: EdgeInsets.all(18),
                         labelText: 'Email',
                         isDense: true,
                         prefixIcon: Padding(
@@ -71,9 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     initialValue: userLocal.password,
                     obscureText: true,
                     decoration: const InputDecoration(
+                        filled: true,
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.only(
-                            left: 20, right: 20, top: 30, bottom: 10),
+                        contentPadding: EdgeInsets.all(18),
                         labelText: "Senha",
                         isDense: true,
                         prefixIcon: Padding(
@@ -87,34 +102,64 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 30),
-                      ElevatedButton(
-                          onPressed: () {
-                            if (_formkey.currentState!.validate()) {
-                              _formkey.currentState!.save();
-                              UserServices _userServices = UserServices();
-                              _userServices.signIn(userLocal, onSucces: () {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomeScreen()));
-                              }, onFail: (e) {
-                                Text('$e');
-                              });
-                            }
-                          },
-                          child: const Text("Entrar")),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                          onPressed: onPressed, child: const Text("Cadastrar")),
+                      TextButton(
+                          style: TextButton.styleFrom(),
+                          onPressed: () {},
+                          child: Text(
+                            "Esqueci minha senha",
+                            style: TextStyle(color: Colors.blue.shade700),
+                          )),
                     ],
                   ),
+                  const Divider(
+                    height: 16,
+                  ),
+                  Column(
+                    children: [
+                      BlockButton(
+                        label: const Text("Entrar"),
+                        onPressed: () {
+                          if (_formkey.currentState!.validate()) {
+                            _formkey.currentState!.save();
+                            UserServices _userServices = UserServices();
+                            _userServices.signIn(userLocal, onSucces: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HomeScreen()));
+                            }, onFail: (e) {
+                              Text('$e');
+                            });
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BlockButton(
+                          label: const Text("Cadastrar-se"),
+                          onPressed: onPressed)
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      // BOTAO DE ENTRADA PARA TESTE, REMOVER EM SEGUIDA
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/home");
+                          },
+                          child: const Text('TESTE'))
+                    ],
+                  )
                 ],
               ),
             ),
