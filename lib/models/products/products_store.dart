@@ -1,38 +1,50 @@
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Products {
-  double? preco;
   String? id;
-  String? marca;
-  String? tipo;
-  int? quantidade;
+  String? name;
+  String? price;
+  String? brand; // marca
+  String? type;
+  String? quantity;
 
   //construtor
   Products({
     this.id,
-    this.preco,
-    this.marca,
-    this.tipo,
-    this.quantidade,
+    this.name,
+    this.price,
+    this.brand,
+    this.type,
+    this.quantity,
   });
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    result.addAll({'preco': preco});
-    result.addAll({'marca': marca});
-    result.addAll({'tipo': tipo});
-    result.addAll({'quantidade': quantidade});
-
-    return result;
+    return {
+      'name': name,
+      'price': price,
+      'brand': brand,
+      'type': type,
+      'quantity': quantity,
+    };
   }
 
+  //metodo de armazanamento dos dados vindos do firebase
+  Products.fromDocument(DocumentSnapshot doc) {
+    id = doc.id;
+    name = doc.get('name');
+    price = doc.get('price');
+    brand = doc.get('brand');
+    type = doc.get('type');
+    quantity = doc.get('quantity');
+  }
+
+/*
   factory Products.fromMap(Map<String, dynamic> map) {
     return Products(
-      preco: map['preco'] ?? '',
-      marca: map['marca'] ?? '',
-      tipo: map['tipo'] ?? '',
-      quantidade: map['quantidade'] ?? '',
+      price: map['price'] ?? '',
+      brand: map['brand'] ?? '',
+      type: map['type'] ?? '',
+      quantity: map['quantity'] ?? '',
     );
   }
 
@@ -43,5 +55,5 @@ class Products {
 
   @override
   String toString() =>
-      'Products preco:  preco, marca: $marca, tipo: $tipo, quantidade: $quantidade)';
+      'Products price:  price, brand: $brand, type: $type, quantity: $quantity)';*/
 }

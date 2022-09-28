@@ -24,7 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  UserLocal userLocal = UserLocal();
+  UserLocal userLocal =
+      UserLocal(); // instanciação da classe user - dados do usuario -
   @override
   Widget build(BuildContext context) {
     return Scaffold(

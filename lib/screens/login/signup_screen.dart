@@ -156,8 +156,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(height: 30),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.black,
-                                primary:
+                                foregroundColor: Colors.black,
+                                backgroundColor:
                                     const Color.fromARGB(255, 233, 143, 21)),
                             onPressed: () {
                               if (formkey.currentState!.validate()) {
